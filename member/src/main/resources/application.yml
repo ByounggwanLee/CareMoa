@@ -9,6 +9,11 @@ spring:
   data:
     rest:
       base-path: /api
+#      default-media-type: application/hal+json
+    web:
+      pageable:
+        default-page-size: 20 # 기본 페이지 사이즈
+        max-page-size: 2000 # 최대 페이지 사이즈
       
   jackson:
     serialization:
@@ -63,6 +68,7 @@ spring:
         "[format_sql]": true
         "[show_sql]": true
         "[use_sql_comment]": true
+
   
 #-------------------------------------------------------------
 # h2 Console을 이용한 datasource 접근 처리

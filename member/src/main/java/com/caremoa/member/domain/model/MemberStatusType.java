@@ -3,6 +3,17 @@ package com.caremoa.member.domain.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+* @packageName    : com.caremoa.member.domain.model
+* @fileName       : MemberStatusType.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : MemberStatusType
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 @Getter
 @RequiredArgsConstructor
 public enum MemberStatusType {

@@ -19,13 +19,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+* @packageName    : com.caremoa.member.domain.dto
+* @fileName       : MemberDto.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : MemberDto
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class MemberDto {
+	@Schema(description = "ID", nullable = true)
 	private Long id; // -- ID
+	
 	@Schema(description = "사용자ID", nullable = false, defaultValue = "lbg1225")
 	private String userId; // -- 사용자ID
 
@@ -40,7 +53,7 @@ public class MemberDto {
 
 	private Address address; // -- 도/시, 군/구, 읍/동
 	
-	// List<MemberRole> memberRoles = new ArrayList<>();;
+	// List<MemberRoleDto> memberRoles = new ArrayList<>();;
 
 	@Schema(description = "사용자별점", nullable = true, defaultValue = "50")
 	private Integer userScore; // -- 서비스 사용자 점수

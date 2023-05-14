@@ -1,4 +1,4 @@
-package com.caremoa.member.domain.model;
+package com.caremoa.member.domain.dto;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +22,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.caremoa.member.domain.listener.MemberRoleListener;
+import com.caremoa.member.domain.model.Member;
+import com.caremoa.member.domain.model.MemberRole;
+import com.caremoa.member.domain.model.MemberStatusType;
+import com.caremoa.member.domain.model.RoleType;
+import com.caremoa.member.domain.model.vo.Address;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
@@ -29,62 +34,65 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-* @packageName    : com.caremoa.member.domain.model
+* @packageName    : com.caremoa.member.domain.dto
 * @fileName       : MemberRoleDto.java
 * @author         : 이병관
 * @date           : 2023.05.14
-* @description    : MemberRoleDto Entity
+* @description    : MemberRoleDto
 * ===========================================================
 * DATE              AUTHOR             NOTE
 * -----------------------------------------------------------
 * 2023.05.14        이병관       최초 생성
 */
-@Entity
-@EntityListeners({AuditingEntityListener.class, MemberRoleListener.class})
-@Table(name="MEMBERROLE") // uniqueConstraints = { @UniqueConstraint(columnNames = { "MEMBER_ID", "ROLE" }) })
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // AccessLevel.PUBLIC
-@AllArgsConstructor
 @Builder
-public class MemberRole {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class MemberRoleDto {
+	@Schema(description = "ID", nullable = true)
 	private Long id;
-	
-	
-//	@ManyToOne // (fetch = FetchType.LAZY)
-//	@JoinColumn(name = "MEMBER_ID")
-//	private Member member;
-	@Column(name = "MEMBER_ID", nullable = false)
+
 	@Schema(description = "회원ID", nullable = false )
 	private Long memberId;
 	
-	@Column(name = "ROLE", nullable = false, length = 20)
 	@Schema(description = "권한", nullable = true , defaultValue = "USER")
 	@Enumerated(EnumType.STRING)
 	private RoleType role;                    //-- 권한
 	
-	@Column(name = "CREATOR_ID", nullable = true, updatable = false)
-	@CreatedBy
-    @Schema(description = "생성자ID", nullable = true)
+	@Schema(description = "생성자ID", nullable = true)
 	private String creatorId; //--생성자
 
-	@Column(name = "CREATED_TIME", nullable = true, updatable = false)
-    @CreatedDate
-    @Schema(description = "생성일시", nullable = true)
+	@Schema(description = "생성일시", nullable = true)
 	private LocalDateTime createdTime; //--최초_등록_시간
 
-	@Column(name = "MODIFIER_ID", nullable = true, insertable = false)
-	@LastModifiedBy
-    @Schema(description = "수정자ID", nullable = true)
+	@Schema(description = "수정자ID", nullable = true)
 	private String modifierId; //--생성자
 
-	@Column(name = "MODIFIED_TIME", nullable = true, insertable = false)
-    @LastModifiedDate
-    @Schema(description = "최종수정시간", nullable = true)
+	@Schema(description = "최종수정시간", nullable = true)
 	private LocalDateTime modifiedTime; //--최종_수정_시간
+	
+	public MemberRole toModel() {
+		return MemberRole.builder()
+				.id(id)
+				.memberId(memberId)
+				.role(role)
+				.build();
+	}
+	
+	public static MemberRoleDto toDto(final MemberRole memberRole) {
+		return MemberRoleDto.builder()
+				.id(memberRole.getId())
+				.memberId(memberRole.getMemberId())
+				.role(memberRole.getRole())
+				.creatorId(memberRole.getCreatorId())
+				.createdTime(memberRole.getCreatedTime())
+				.modifierId(memberRole.getModifierId())
+				.modifiedTime(memberRole.getModifiedTime())
+			    .build();
+	}
 }

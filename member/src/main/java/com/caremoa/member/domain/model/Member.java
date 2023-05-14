@@ -26,6 +26,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+* @packageName    : com.caremoa.member.domain.model
+* @fileName       : Member.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : Member Entity
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 @Entity
 @EntityListeners({ MemberListener.class, AuditingEntityListener.class })
 @Table(name = "MEMBER")
@@ -64,7 +75,7 @@ public class Member {
 	 * @Enumerated(EnumType.STRING) private RoleType role; //-- 권한
 	 */
 	//@OneToMany(mappedBy = "member")
-	//private List<MemberRole> memberRoles = new ArrayList<>();
+	//private List<MemberRoleDto> memberRoles = new ArrayList<>();
 
 	@Column(name = "USER_SCORE", nullable = true, length = 20)
 	@Schema(description = "사용자별점", nullable = true, defaultValue = "50")

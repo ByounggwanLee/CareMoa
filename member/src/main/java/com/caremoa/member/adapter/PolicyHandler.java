@@ -11,6 +11,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+* @packageName    : com.caremoa.member.adapter
+* @fileName       : PolicyHandler.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : Cloud Stream 을 이용한 Pub/Sub 구현
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 @Slf4j
 @Configuration
 public class PolicyHandler {

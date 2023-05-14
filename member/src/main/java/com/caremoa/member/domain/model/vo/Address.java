@@ -10,6 +10,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+/**
+* @packageName    : com.caremoa.member.domain.model.vo
+* @fileName       : Address.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : 주소 VO
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 @Data
 @AllArgsConstructor
 @Embeddable

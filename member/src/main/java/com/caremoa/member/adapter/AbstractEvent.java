@@ -3,26 +3,30 @@ package com.caremoa.member.adapter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.function.StreamBridge;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.util.MimeTypeUtils;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
+/**
+* @packageName    : com.caremoa.member.adapter
+* @fileName       : AbstractEvent.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : Event pub/sub 정의을 위한 부모클래스
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 @Data
 public class AbstractEvent {
 	private String eventType;
 	private String timestamp;
 
     public AbstractEvent(){
-        this.setEventType(this.getClass().getSimpleName());
+    	// 정의한 클래스명이 들어감
+        this.setEventType(this.getClass().getSimpleName()); 
         SimpleDateFormat defaultSimpleDateFormat = new SimpleDateFormat("YYYYMMddHHmmss");
         this.timestamp = defaultSimpleDateFormat.format(new Date());
     }
@@ -41,6 +45,7 @@ public class AbstractEvent {
     }
     
     public boolean validate(){
+    	// 정의한 클래스명의 Subscription인지 확인
         return getEventType().equals(getClass().getSimpleName());
     }
 }

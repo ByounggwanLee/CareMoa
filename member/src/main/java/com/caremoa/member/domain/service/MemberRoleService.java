@@ -30,20 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 * -----------------------------------------------------------
 * 2023.05.14        이병관       최초 생성
 */
+
 /**
 * @packageName    : com.caremoa.member.domain.service
-* @fileName       : MemberService.java
-* @author         : 이병관
-* @date           : 2023.05.14
-* @description    :
-* ===========================================================
-* DATE              AUTHOR             NOTE
-* -----------------------------------------------------------
-* 2023.05.14        이병관       최초 생성
-*/
-/**
-* @packageName    : com.caremoa.member.domain.service
-* @fileName       : MemberService.java
+* @fileName       : MemberRoleService.java
 * @author         : 이병관
 * @date           : 2023.05.14
 * @description    :
@@ -55,9 +45,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberService {
-	private final MemberRepository repository;
-	private final MemberRoleRepository roleRepository;
+public class MemberRoleService {
+	private final MemberRoleRepository repository;
 
 	// @Transactional(propagation = , isolation = ,noRollbackFor = ,readOnly =
 	// ,rollbackFor = ,timeout = )
@@ -71,7 +60,7 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	@Transactional(readOnly=true)
-	public Page<Member> getAll(Pageable pageable) throws Exception, ApiException {
+	public Page<MemberRole> getAll(Pageable pageable) throws Exception, ApiException {
 		return repository.findAll(pageable);
 	}
 
@@ -86,14 +75,28 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	@Transactional(readOnly=true)
-	public Member getById(Long id) throws Exception, ApiException {
-		Optional<Member> data = repository.findById(id);
+	public MemberRole getById(Long id) throws Exception, ApiException {
+		Optional<MemberRole> data = repository.findById(id);
 
 		if (data.isPresent()) {
 			return data.get();
 		} else {
-			throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
+			throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[{}]bNot Found", id));
 		}
+	}
+	
+	/**
+	 * @methodName    : getByMemberId
+	 * @date          : 2023.05.14
+	 * @description   : MemberRoleDto Repository의 memberId로 검색한다.
+	 * @param memberId
+	 * @return
+	 * @throws Exception
+	 * @throws ApiException
+	*/
+	@Transactional(readOnly=true)
+	public Page<MemberRole> getByMemberId(Long memberId, Pageable pageable) throws Exception {
+		return repository.findByMemberId(memberId, pageable);
 	}
 
 	/**
@@ -106,16 +109,16 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	@Transactional
-	public Member postData(Member newData) throws Exception, ApiException {
-		newData = repository.save(newData);
-		roleRepository.save(MemberRole.builder().memberId(newData.getId()).role(RoleType.USER).build());
+	public MemberRole postData(MemberRole newData) throws Exception, ApiException {
+		repository.save(newData);
 		return newData;
 	}
 	
+
 	/**
 	 * @methodName    : putData
 	 * @date          : 2023.05.14
-	 * @description   : Member를 수정한다
+	 * @description   : MemberRole를 수정한다
 	 * @param newData
 	 * @param id
 	 * @return
@@ -123,20 +126,20 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	@Transactional
-	public Member putData(Member newData, Long id) throws Exception, ApiException {
+	public MemberRole putData(MemberRole newData, Long id) throws Exception, ApiException {
 		return repository.findById(id) //
 				.map(oldData -> {
 					newData.setId(oldData.getId());
 					return repository.save(newData);
 				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[{}]bNot Found", id));
 				});
 	}
 	
 	/**
 	 * @methodName    : patchData
 	 * @date          : 2023.05.14
-	 * @description   : Member를 수정한다.(전달된 값만[Null 제외])
+	 * @description   : MemberRole를 수정한다.(전달된 값만[Null 제외])
 	 * @param newData
 	 * @param id
 	 * @return
@@ -144,18 +147,13 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	@Transactional
-	public Member patchData(Member newData, Long id) throws Exception, ApiException {
+	public MemberRole patchData(MemberRole newData, Long id) throws Exception, ApiException {
 		return repository.findById(id) //
 				.map(oldData -> {
-					if(oldData.getAddress() != null ) newData.setId(oldData.getId());
-					if(oldData.getName() != null ) newData.setName(oldData.getName());
-					if(oldData.getNickname() != null ) newData.setNickname(oldData.getNickname());
-					if(oldData.getPassword() != null ) newData.setPassword(oldData.getPassword());
-					if(oldData.getStatus() != null ) newData.setStatus(oldData.getStatus());
-					if(oldData.getUserScore() != null ) newData.setUserScore(oldData.getUserScore());
+					if(oldData.getRole() != null ) newData.setRole(oldData.getRole());
 					return repository.save(newData);
 				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRoleDto id=[{}]bNot Found", id));
 				});
 	}
 	
@@ -169,7 +167,6 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	public void deleteData(@PathVariable("id") Long id) throws Exception, ApiException {
-		roleRepository.deleteByMemberId(id);
 		repository.deleteById(id);
 	}
 }

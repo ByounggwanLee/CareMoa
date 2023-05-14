@@ -1,7 +1,5 @@
 package com.caremoa.member.controller;
 
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,94 +12,106 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.caremoa.member.domain.model.MemberRole;
-import com.caremoa.member.domain.repository.MemberRoleRepository;
+import com.caremoa.member.domain.dto.MemberRoleDto;
+import com.caremoa.member.domain.service.MemberRoleService;
+import com.caremoa.member.exception.ApiException;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
+@Tag(name = "회원권한관리", description = "CareMoa 회원권한관리")
 @RequiredArgsConstructor
 public class MemberRoleController {
-
-	final private MemberRoleRepository repository;
-
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the MemberRoles", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRole.class)) }),
+	final private MemberRoleService service;
+	
+	@Operation(summary = "회원권한정보 조회" , description = "회원권한정보 조회" )
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the memberroles", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content) })
-	@GetMapping("/memberRoles")
-	public ResponseEntity<Page<MemberRole>> getAll(Pageable pageable) {
+	@GetMapping("/memberroles")
+	public ResponseEntity<Page<MemberRoleDto>> getAll(Pageable pageable) {
 		try {
 			log.info("findAll");
-			return ResponseEntity.ok().body(repository.findAll(pageable));
+			return ResponseEntity.ok().body(service.getAll(pageable).map(MemberRoleDto::toDto));
 		} catch (Exception e) {
 			return ResponseEntity.internalServerError().body(null);
 		}
 	}
 
-	// @Operation(summary = "알림 수신 이력(Table) Key조회" , description = "알림 수신 이력(Table)
-	// Primary Key로 조회" )
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the MemberRole", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRole.class)) }),
-			@ApiResponse(responseCode = "404", description = "MemberRole not found", content = @Content) })
-	@GetMapping("/memberRoles/{id}")
-	public ResponseEntity<MemberRole> getById(@PathVariable("id") Long id) {
-		Optional<MemberRole> data = repository.findById(id);
+	@Operation(summary = "회원권한정보 Key조회" , description = "회원권한정보 Primary Key로 조회" )
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the MemberRoleDto", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
+			@ApiResponse(responseCode = "404", description = "MemberRoleDto not found", content = @Content) })
+	@GetMapping("/memberroles/{id}")
+	public ResponseEntity<MemberRoleDto> getById(@PathVariable("id") Long id) {
+		try {
+		    return new ResponseEntity<>(MemberRoleDto.toDto(service.getById(id)),HttpStatus.OK);
+		}catch( ApiException apiEx ) {
+		    return new ResponseEntity<>(null, apiEx.getCode());
+	    }catch (Exception e) {
+			return ResponseEntity.internalServerError().body(null);
+		}
+	}
 
-		if (data.isPresent()) {
-			return ResponseEntity.ok().body(data.get());
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@Operation(summary = "회원권한정보 회원ID로 조회" , description = "회원권한정보 회원ID로 조회" )
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the MemberRoleDto", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
+			@ApiResponse(responseCode = "404", description = "MemberRoleDto not found", content = @Content) })
+	@GetMapping("/memberroles/memberid/{id}")
+	public ResponseEntity<Page<MemberRoleDto>> getByMemberId(@PathVariable("memberId") Long memberId, Pageable pageable) {
+		try {
+		    return ResponseEntity.ok().body(service.getByMemberId(memberId, pageable).map(MemberRoleDto::toDto));
+		 }catch (Exception e) {
+			return ResponseEntity.internalServerError().body(null);
 		}
 	}
 
 	
-	// @Operation(summary = "알림 수신 이력(Table) 등록" , description = "알림 수신 이력(Table) 신규
-	// 데이터 등록" )
-	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Create the MemberRole", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRole.class)) }),
+	@Operation(summary = "회원권한정보 등록" , description = "회원권한정보 신규 데이터 등록" )
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Create the MemberRoleDto", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content) })
-	@PostMapping("/memberRoles")
-	ResponseEntity<MemberRole> postData(@RequestBody MemberRole newData) {
+	@PostMapping("/memberroles")
+	ResponseEntity<MemberRoleDto> postData(@RequestBody MemberRoleDto newData) {
 		try {
-			newData = repository.save(newData);
-			return new ResponseEntity<>(newData, HttpStatus.CREATED);
+			return new ResponseEntity<>(MemberRoleDto.toDto(service.postData(newData.toModel())), HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	// @Operation(summary = "알림 수신 이력(Table) 수정" , description = "알림 수신 이력(Table)
-	// 데이터 수정" )
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Update the MemberRole", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRole.class)) }),
-			@ApiResponse(responseCode = "404", description = "MemberRole not found", content = @Content) })
-	@PutMapping("/memberRoles/{id}")
-	ResponseEntity<MemberRole> putData(@RequestBody MemberRole newData,
+	@Operation(summary = "회원권한정보 수정" , description = "회원권한정보 데이터 수정" )
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Update the MemberRoleDto", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
+			@ApiResponse(responseCode = "404", description = "MemberRoleDto not found", content = @Content) })
+	@PutMapping("/memberroles/{id}")
+	ResponseEntity<MemberRoleDto> putData(@RequestBody MemberRoleDto newData,
 			@PathVariable("id") Long id) {
-		return repository.findById(id) //
-				.map(oldData -> {
-					newData.setId(oldData.getId());
-					return new ResponseEntity<>(repository.save(newData), HttpStatus.OK);
-				}).orElseGet(() -> {
-					return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-				});
+		try {
+			return new ResponseEntity<>(MemberRoleDto.toDto(service.putData(newData.toModel(),id)), HttpStatus.CREATED);
+		}catch( ApiException apiEx ) {
+		     return new ResponseEntity<>(null, apiEx.getCode());
+	    } catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
-	// @Operation(summary = "알림 수신 이력(Table) 삭제" , description = "알림 수신 이력(Table)
-	// Primary Key로 삭제" )
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Delete the MemberRole", content = {
-			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRole.class)) }),
+	@Operation(summary = "회원권한정보 삭제" , description = "회원권한정보 Primary Key로 삭제" )
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Delete the MemberRoleDto", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content) })
-	@DeleteMapping("/memberRoles/{id}")
+	@DeleteMapping("/memberroles/{id}")
 	public ResponseEntity<HttpStatus> deleteData(@PathVariable("id") Long id) {
 		try {
-			repository.deleteById(id);
+			service.deleteData(id);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

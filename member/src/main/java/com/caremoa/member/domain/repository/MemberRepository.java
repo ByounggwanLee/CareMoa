@@ -4,6 +4,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.caremoa.member.domain.model.Member;
 
+
+/**
+* @packageName    : com.caremoa.member.domain.repository
+* @fileName       : MemberRepository.java
+* @author         : 이병관
+* @date           : 2023.05.14
+* @description    : Member Repository
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.14        이병관       최초 생성
+*/
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
 }

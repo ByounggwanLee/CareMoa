@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 * @fileName       : MemberListener.java
 * @author         : 이병관
 * @date           : 2023.05.07
-* @description    :
+* @description    : Member Repository Event Listenner
 * ===========================================================
 * DATE              AUTHOR             NOTE
 * -----------------------------------------------------------
