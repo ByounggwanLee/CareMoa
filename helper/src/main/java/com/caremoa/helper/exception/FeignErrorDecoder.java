@@ -18,7 +18,7 @@ public class FeignErrorDecoder  implements ErrorDecoder {
 
 	@Override
 	public Exception decode(String methodKey, Response response) {
-		String message = "Feign Client Call Error : " + methodKey ;
+		//String message = "Feign Client Call Error : " + methodKey ;
 
 		log.warn("global error code {}", response.status());
 

@@ -2,7 +2,6 @@ package com.caremoa.member.domain.service;
 
 import java.util.Optional;
 
-import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -59,8 +58,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 	private final MemberRepository repository;
 	private final MemberRoleRepository roleRepository;
-	final private StreamBridge streamBridge;
-	
 	// @Transactional(propagation = , isolation = ,noRollbackFor = ,readOnly =
 	// ,rollbackFor = ,timeout = )
 	/**
@@ -74,6 +71,7 @@ public class MemberService {
 	*/
 	@Transactional(readOnly=true)
 	public Page<Member> getAll(Pageable pageable) throws Exception, ApiException {
+		log.info("getAll");
 		return repository.findAll(pageable);
 	}
 

@@ -61,49 +61,49 @@ public class OpenApiConfig {
 	@Value("${api.info.license.url: api.info.license.url}")
 	private String licenseUrl;
 
-	/**
-	 * @methodName    : api
-	 * @date          : 2023.05.14
-	 * @description   : Swagger 화면의 정보를 설정한다.
-	 * @return
-	*/
-	@Bean
-	public OpenAPI api() {
+    /**
+     * @methodName    : api
+     * @date          : 2023.05.14
+     * @description   : Swagger 
+     * @return
+    */
+    @Bean
+    OpenAPI api() {
 		return new OpenAPI().schemaRequirement(SECURITY_SCHEME_NAME, getSecurityScheme())
 				.security(getSecurityRequirement()).info(info());
 	}
 
-	/**
-	 * @methodName    : apiAll
-	 * @date          : 2023.05.14
-	 * @description   : Swagger 화면의 전체 Control Group을 설정한다.
-	 * @return
-	*/
-	@Bean
-	public GroupedOpenApi apiAll() {
+    /**
+     * @methodName    : apiAll
+     * @date          : 2023.05.14
+     * @description   : Swagger È­¸éÀÇ ÀüÃ¼ Control GroupÀ» ¼³Á¤ÇÑ´Ù.
+     * @return
+    */
+    @Bean
+    GroupedOpenApi apiAll() {
 		return GroupedOpenApi.builder().group("all").pathsToMatch("/**").build();
 	}
 
-	/**
-	 * @methodName    : apiNoVersion
-	 * @date          : 2023.05.14
-	 * @description   : Swagger 공통 Control 화면의 Group을 설정한다.
-	 * @return
-	*/
-	@Bean
-	public GroupedOpenApi apiNoVersion() {
+    /**
+     * @methodName    : apiNoVersion
+     * @date          : 2023.05.14
+     * @description   : Swagger
+     * @return
+    */
+    @Bean
+    GroupedOpenApi apiNoVersion() {
 		return GroupedOpenApi.builder().group("controller").pathsToExclude("/api/**")
 				.packagesToScan("com.caremoa.helper.controller").build();
 	}
 
-	/**
-	 * @methodName    : apiRest
-	 * @date          : 2023.05.14
-	 * @description   : Swagger 화면의 Rest Control Group을 설정한다.
-	 * @return
-	*/
-	@Bean
-	public GroupedOpenApi apiRest() {
+    /**
+     * @methodName    : apiRest
+     * @date          : 2023.05.14
+     * @description   : Swagger
+     * @return
+    */
+    @Bean
+    GroupedOpenApi apiRest() {
 		return GroupedOpenApi.builder().group("RestApi").pathsToMatch("/api/**").build();
 	}
 

@@ -17,7 +17,11 @@ import lombok.Getter;
 */
 @Getter
 public class ApiException extends RuntimeException {
-	 private final HttpStatus code;
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final HttpStatus code;
 
      public HttpStatus getCode() {
          return code;

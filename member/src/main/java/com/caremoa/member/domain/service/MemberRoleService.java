@@ -58,6 +58,7 @@ public class MemberRoleService {
 	*/
 	@Transactional(readOnly=true)
 	public Page<MemberRole> getAll(Pageable pageable) throws Exception, ApiException {
+		log.info("getAll");
 		return repository.findAll(pageable);
 	}
 

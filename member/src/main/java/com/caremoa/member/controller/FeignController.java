@@ -51,10 +51,11 @@ public class FeignController {
 	@GetMapping("/feigns")
 	public ResponseEntity<Page<MemberDto>> getAll(Pageable pageable) {
 		try {
+			log.info("getAll");
 			return ResponseEntity.ok().body(service.getAll(pageable));
 			// return ResponseEntity.ok().body(service.getAll(pageable));
 		} catch (Exception e) {
-			log.error("{}", e.getStackTrace());
+			//log.error("{}", e.getStackTrace());
 			return ResponseEntity.internalServerError().body(null);
 		}
 	}

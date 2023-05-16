@@ -4,6 +4,7 @@ import com.caremoa.member.adapter.AbstractEvent;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 * 2023.05.14        이병관       최초 생성
 */
 @Data
+@EqualsAndHashCode(callSuper=false)
 @NoArgsConstructor
 public class ContractCompleted extends AbstractEvent{
 	private Long memberId; // -- ID
