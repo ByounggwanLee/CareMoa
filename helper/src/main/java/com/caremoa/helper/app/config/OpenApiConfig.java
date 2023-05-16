@@ -1,4 +1,4 @@
-package com.caremoa.member.app.config;
+package com.caremoa.helper.app.config;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
 /**
-* @packageName    : com.caremoa.member.app.config
+* @packageName    : com.caremoa.helper.app.config
 * @fileName       : OpenApiConfig.java
 * @author         : 이병관
 * @date           : 2023.05.07
@@ -93,7 +93,7 @@ public class OpenApiConfig {
 	@Bean
 	public GroupedOpenApi apiNoVersion() {
 		return GroupedOpenApi.builder().group("controller").pathsToExclude("/api/**")
-				.packagesToScan("com.caremoa.member.controller").build();
+				.packagesToScan("com.caremoa.helper.controller").build();
 	}
 
 	/**

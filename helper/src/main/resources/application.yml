@@ -1,7 +1,7 @@
 server:
-  port: 8081
+  port: 8082
   servlet:
-    contextPath: /member
+    contextPath: /helper
 
 database: h2    
 
@@ -26,7 +26,7 @@ spring:
       #classpath*:db/schema.sql
       #classpath*:db/${database}/data.sql
   datasource:
-    url: jdbc:h2:mem:memberdb 
+    url: jdbc:h2:mem:helperdb 
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -136,8 +136,8 @@ springdoc:
   
 api:  # Swagger UI Information
   info:
-    title: CareMoa Member Service API
-    description: API to fetch CareMoa Member
+    title: CareMoa Helper Service API
+    description: API to fetch CareMoa Helper
     version: 1.0.0
     terms-of-service: http://caremoa.com/terms/
     contact:
@@ -155,7 +155,7 @@ feign:
   client:
     config:
       default:
-        errorDecoder: com.caremoa.member.exception.FeignErrorDecoder
+        errorDecoder: com.caremoa.helper.exception.FeignErrorDecoder
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic

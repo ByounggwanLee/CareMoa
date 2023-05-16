@@ -2,8 +2,15 @@ package com.caremoa.helper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
+@EnableJpaAuditing // JPA Auditing을 활성화 하기 위한 어노테이션
+@EnableFeignClients
+@Slf4j
 public class HelperApplication {
 
 	public static void main(String[] args) {
