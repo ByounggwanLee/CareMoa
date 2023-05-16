@@ -22,5 +22,5 @@ public enum MemberStatusType {
 	DELETED("STATUS_DELETEED", "삭제");       // 삭제 후 2년뒤 완전삭제
 
 	private final String key;
-	private final String title;	
+	private final String title;
 }

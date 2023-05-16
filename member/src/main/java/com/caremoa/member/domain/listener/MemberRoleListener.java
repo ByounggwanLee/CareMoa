@@ -8,10 +8,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
-import com.caremoa.member.domain.model.Member;
 import com.caremoa.member.domain.model.MemberRole;
-import com.caremoa.member.domain.model.RoleType;
-import com.caremoa.member.domain.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

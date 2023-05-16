@@ -4,9 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caremoa.member.adapter.MemberFeign;
-import com.caremoa.member.domain.dto.ContractCompleted;
 import com.caremoa.member.domain.dto.MemberDto;
 import com.caremoa.member.exception.ApiException;
 
@@ -47,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FeignController {
 
 	final private MemberFeign service;
-	
+
 	@Operation(summary = "회원정보  조회(Feign)" , description = "회원정보 조회" )
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the members", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) }),
@@ -78,7 +74,7 @@ public class FeignController {
 		}
 	}
 
-	
+
 	@Operation(summary = "회원정보 등록(Feign)" , description = "회원정보 신규 데이터 등록" )
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Create the MemberDto", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) }),

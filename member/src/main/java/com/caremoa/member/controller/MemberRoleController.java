@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberRoleController {
 	final private MemberRoleService service;
-	
+
 	@Operation(summary = "회원권한정보 조회" , description = "회원권한정보 조회" )
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Found the memberroles", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),
@@ -74,7 +74,7 @@ public class MemberRoleController {
 		}
 	}
 
-	
+
 	@Operation(summary = "회원권한정보 등록" , description = "회원권한정보 신규 데이터 등록" )
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Create the MemberRoleDto", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberRoleDto.class)) }),

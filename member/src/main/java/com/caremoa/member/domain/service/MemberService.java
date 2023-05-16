@@ -75,7 +75,7 @@ public class MemberService {
 		return repository.findAll(pageable);
 	}
 
-	
+
 	/**
 	 * @methodName    : getById
 	 * @date          : 2023.05.14
@@ -111,7 +111,7 @@ public class MemberService {
 		roleRepository.save(MemberRole.builder().memberId(newData.getId()).role(RoleType.USER).build());
 		return newData;
 	}
-	
+
 	/**
 	 * @methodName    : putData
 	 * @date          : 2023.05.14
@@ -132,7 +132,7 @@ public class MemberService {
 					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
 				});
 	}
-	
+
 	/**
 	 * @methodName    : patchData
 	 * @date          : 2023.05.14
@@ -158,7 +158,7 @@ public class MemberService {
 					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
 				});
 	}
-	
+
 	// @Transactional
 	/**
 	 * @methodName    : deleteData

@@ -3,7 +3,6 @@ package com.caremoa.member.exception;
 import org.springframework.http.HttpStatus;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
 * @packageName    : com.caremoa.member.exception
@@ -32,5 +31,5 @@ public class ApiException extends RuntimeException {
          super(message);
          this.code = code;
      }
-     
+
 }

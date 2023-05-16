@@ -8,14 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.MimeTypeUtils;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caremoa.member.domain.dto.ContractCompleted;
@@ -81,7 +79,7 @@ public class MemberController {
 		}
 	}
 
-	
+
 	@Operation(summary = "회원정보 등록" , description = "회원정보 신규 데이터 등록" )
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Create the MemberDto", content = {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) }),
@@ -124,7 +122,7 @@ public class MemberController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@Operation(summary = "카프카 Publish 테스트" , description = "카프카 Publish 테스트" )
 	@GetMapping("/testkafka/{memberId}/{helperId}")
 	public ResponseEntity<HttpStatus> test(@PathVariable("memberId") Long memberId, @PathVariable("helperId") Long helperId) {

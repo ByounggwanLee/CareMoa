@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.caremoa.member.domain.model.Member;
 import com.caremoa.member.domain.model.MemberRole;
-import com.caremoa.member.domain.model.RoleType;
-import com.caremoa.member.domain.repository.MemberRepository;
 import com.caremoa.member.domain.repository.MemberRoleRepository;
 import com.caremoa.member.exception.ApiException;
 
@@ -64,7 +61,7 @@ public class MemberRoleService {
 		return repository.findAll(pageable);
 	}
 
-	
+
 	/**
 	 * @methodName    : getById
 	 * @date          : 2023.05.14
@@ -84,7 +81,7 @@ public class MemberRoleService {
 			throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[{}]bNot Found", id));
 		}
 	}
-	
+
 	/**
 	 * @methodName    : getByMemberId
 	 * @date          : 2023.05.14
@@ -113,7 +110,7 @@ public class MemberRoleService {
 		repository.save(newData);
 		return newData;
 	}
-	
+
 
 	/**
 	 * @methodName    : putData
@@ -135,7 +132,7 @@ public class MemberRoleService {
 					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[{}]bNot Found", id));
 				});
 	}
-	
+
 	/**
 	 * @methodName    : patchData
 	 * @date          : 2023.05.14
@@ -156,7 +153,7 @@ public class MemberRoleService {
 					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRoleDto id=[{}]bNot Found", id));
 				});
 	}
-	
+
 	// @Transactional
 	/**
 	 * @methodName    : deleteData

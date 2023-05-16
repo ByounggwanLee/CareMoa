@@ -10,10 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,7 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
 * @packageName    : com.caremoa.member.domain.model
@@ -54,20 +50,20 @@ public class MemberRole {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
-	
-	
+
+
 //	@ManyToOne // (fetch = FetchType.LAZY)
 //	@JoinColumn(name = "MEMBER_ID")
 //	private Member member;
 	@Column(name = "MEMBER_ID", nullable = false)
 	@Schema(description = "회원ID", nullable = false )
 	private Long memberId;
-	
+
 	@Column(name = "ROLE", nullable = false, length = 20)
 	@Schema(description = "권한", nullable = true , defaultValue = "USER")
 	@Enumerated(EnumType.STRING)
 	private RoleType role;                    //-- 권한
-	
+
 	@Column(name = "CREATOR_ID", nullable = true, updatable = false)
 	@CreatedBy
     @Schema(description = "생성자ID", nullable = true)

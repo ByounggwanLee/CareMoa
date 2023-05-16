@@ -1,14 +1,11 @@
 package com.caremoa.member.domain.dto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.caremoa.member.domain.model.Member;
-import com.caremoa.member.domain.model.MemberRole;
 import com.caremoa.member.domain.model.MemberStatusType;
 import com.caremoa.member.domain.model.vo.Address;
 
@@ -38,7 +35,7 @@ import lombok.ToString;
 public class MemberDto {
 	@Schema(description = "ID", nullable = true)
 	private Long id; // -- ID
-	
+
 	@Schema(description = "사용자ID", nullable = false, defaultValue = "lbg1225")
 	private String userId; // -- 사용자ID
 
@@ -52,7 +49,7 @@ public class MemberDto {
 	private String nickname; // -- 별명
 
 	private Address address; // -- 도/시, 군/구, 읍/동
-	
+
 	// List<MemberRoleDto> memberRoles = new ArrayList<>();;
 
 	@Schema(description = "사용자별점", nullable = true, defaultValue = "50")
@@ -84,7 +81,7 @@ public class MemberDto {
 	}
 
     public static MemberDto toDto(final Member member) {
-    	 
+
     	return MemberDto.builder()
 		       .id(member.getId())
 		       .userId(member.getUserId())
@@ -97,5 +94,5 @@ public class MemberDto {
 		       .createdTime(member.getCreatedTime())
 		       .modifiedTime(member.getModifiedTime())
 		       .build();
-	} 
+	}
 }

@@ -3,7 +3,6 @@ package com.caremoa.member.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.h2.api.ErrorCode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,13 +48,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn("handleAllException", ex);
         return handleExceptionInternal(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     // RuntimeException과 대부분의 에러 처리 메세지를 보내기 위한 메소드
     private ResponseEntity<Object> handleExceptionInternal(HttpStatus errorCode) {
         return ResponseEntity.status(errorCode)
                 .body(makeErrorResponse(errorCode));
     }
-    
+
     // 코드 가독성을 위해 에러 처리 메세지를 만드는 메소드 분리
     private ErrorResponse makeErrorResponse(HttpStatus errorCode) {
         return ErrorResponse.builder()

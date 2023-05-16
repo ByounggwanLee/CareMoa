@@ -28,7 +28,7 @@ public class PolicyHandler {
 
 	private ObjectMapper objectMapper = new ObjectMapper();
 	private long errorOccur = 0;
-	
+
 	@Bean
 	public Consumer<ContractCompleted> basicConsumer() {
 		return contractCompleted -> {
@@ -36,7 +36,7 @@ public class PolicyHandler {
 			log.info("teamUpdated 이벤트 수신 : {}", contractCompleted);
 		};
 	}
-	
+
 	@Bean
 	public Consumer<ErrorMessage> KafkaErrorHandler() {
 		return e -> {

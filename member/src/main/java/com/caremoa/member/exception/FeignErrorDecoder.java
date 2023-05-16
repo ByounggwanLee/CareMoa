@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Mydata FeignErrorDecoder 클래스
- * 
+ *
  * @name_ko Mydata FeignErrorDecoder 클래스
  * @author 이병관
  */
@@ -21,7 +21,7 @@ public class FeignErrorDecoder  implements ErrorDecoder {
 		String message = "Feign Client Call Error : " + methodKey ;
 
 		log.warn("global error code {}", response.status());
-		
+
 		return new ResponseStatusException(HttpStatus.valueOf(response.status()),
 				"Feign Client Call Error : " + methodKey );
 //		switch (response.status()) {

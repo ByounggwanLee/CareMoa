@@ -26,11 +26,11 @@ public class AbstractEvent {
 
     public AbstractEvent(){
     	// 정의한 클래스명이 들어감
-        this.setEventType(this.getClass().getSimpleName()); 
+        this.setEventType(this.getClass().getSimpleName());
         SimpleDateFormat defaultSimpleDateFormat = new SimpleDateFormat("YYYYMMddHHmmss");
         this.timestamp = defaultSimpleDateFormat.format(new Date());
     }
-    
+
     public String toJson(){
         ObjectMapper objectMapper = new ObjectMapper();
         String json = null;
@@ -43,7 +43,7 @@ public class AbstractEvent {
 
         return json;
     }
-    
+
     public boolean validate(){
     	// 정의한 클래스명의 Subscription인지 확인
         return getEventType().equals(getClass().getSimpleName());
