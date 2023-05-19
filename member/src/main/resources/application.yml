@@ -84,7 +84,7 @@ spring:
 #-------------------------------------------------------------
   cloud:
     function:
-      definition: basicConsumer;
+      definition: wheneverContractCompletedThenReflectionScore;wheneverClaimCompletedThenReflectionScore;whenevereReviewMemberEvaluatedThenReflectionScore;
       
     stream:
       kafka:
@@ -99,14 +99,30 @@ spring:
 #              resetOffsets: true
 #              start-offset: earliest
       bindings:
-        basicConsumer-in-0:
-          group: member
+        wheneverContractCompletedThenReflectionScore-in-0:
+          group: contract
           destination: caremoa-topic
-          content-type: application/json
+          content-type: application/json        
+        
+        wheneverClaimCompletedThenReflectionScore-in-0:
+          group: claim
+          destination: caremoa-topic
+          content-type: application/json        
+        
+        whenevereReviewMemberEvaluatedThenReflectionScore-in-0:
+          group: review
+          destination: caremoa-topic
+          content-type: application/json        
+        
         basicProducer-out-0:
           destination: caremoa-topic
           content-type: application/json
-          
+        
+       # basicConsumer-in-0:
+       #   group: member
+       #   destination: caremoa-topic
+       #   content-type: application/json
+                    
 #-------------------------------------------------------------
 # springdoc 정의
 # http://localhost:8080/swagger-ui.html

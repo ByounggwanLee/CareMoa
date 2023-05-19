@@ -92,7 +92,7 @@ public class MemberService {
 		if (data.isPresent()) {
 			return data.get();
 		} else {
-			throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
+			throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[%d] Not Found", id));
 		}
 	}
 
@@ -130,7 +130,7 @@ public class MemberService {
 					newData.setId(oldData.getId());
 					return repository.save(newData);
 				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[%d] Not Found", id));
 				});
 	}
 
@@ -148,15 +148,15 @@ public class MemberService {
 	public Member patchData(Member newData, Long id) throws Exception, ApiException {
 		return repository.findById(id) //
 				.map(oldData -> {
-					if(oldData.getAddress() != null ) newData.setId(oldData.getId());
-					if(oldData.getName() != null ) newData.setName(oldData.getName());
-					if(oldData.getNickname() != null ) newData.setNickname(oldData.getNickname());
-					if(oldData.getPassword() != null ) newData.setPassword(oldData.getPassword());
-					if(oldData.getStatus() != null ) newData.setStatus(oldData.getStatus());
-					if(oldData.getUserScore() != null ) newData.setUserScore(oldData.getUserScore());
-					return repository.save(newData);
+					if(newData.getAddress() != null ) oldData.setId(newData.getId());
+					if(newData.getName() != null ) oldData.setName(newData.getName());
+					if(newData.getNickname() != null ) oldData.setNickname(newData.getNickname());
+					if(newData.getPassword() != null ) oldData.setPassword(newData.getPassword());
+					if(newData.getStatus() != null ) oldData.setStatus(newData.getStatus());
+					if(newData.getUserScore() != null ) oldData.setUserScore(newData.getUserScore());
+					return repository.save(oldData);
 				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[{}]bNot Found", id));
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[%d] Not Found", id));
 				});
 	}
 
@@ -172,5 +172,16 @@ public class MemberService {
 	public void deleteData(@PathVariable("id") Long id) throws Exception, ApiException {
 		roleRepository.deleteByMemberId(id);
 		repository.deleteById(id);
+	}
+	
+	@Transactional
+	public Member reflectionScore(Member newData, Long id) throws Exception, ApiException {
+		return repository.findById(id) //
+				.map(oldData -> {
+					oldData.setUserScore(newData.getUserScore() + oldData.getUserScore());
+					return repository.save(oldData);
+				}).orElseGet(() -> {
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[%d] Not Found", id));
+				});
 	}
 }

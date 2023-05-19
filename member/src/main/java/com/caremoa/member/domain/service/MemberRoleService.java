@@ -79,7 +79,7 @@ public class MemberRoleService {
 		if (data.isPresent()) {
 			return data.get();
 		} else {
-			throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[{}]bNot Found", id));
+			throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[%d] Not Found", id));
 		}
 	}
 
@@ -130,7 +130,7 @@ public class MemberRoleService {
 					newData.setId(oldData.getId());
 					return repository.save(newData);
 				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[{}]bNot Found", id));
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRole id=[%d] Not Found", id));
 				});
 	}
 
@@ -148,10 +148,10 @@ public class MemberRoleService {
 	public MemberRole patchData(MemberRole newData, Long id) throws Exception, ApiException {
 		return repository.findById(id) //
 				.map(oldData -> {
-					if(oldData.getRole() != null ) newData.setRole(oldData.getRole());
-					return repository.save(newData);
+					if(newData.getRole() != null ) oldData.setRole(newData.getRole());
+					return repository.save(oldData);
 				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRoleDto id=[{}]bNot Found", id));
+					throw new ApiException(HttpStatus.NOT_FOUND, String.format("MemberRoleDto id=[%d] Not Found", id));
 				});
 	}
 
