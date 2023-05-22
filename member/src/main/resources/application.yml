@@ -84,7 +84,8 @@ spring:
 #-------------------------------------------------------------
   cloud:
     function:
-      definition: wheneverContractCompletedThenReflectionScore;wheneverClaimCompletedThenReflectionScore;whenevereReviewMemberEvaluatedThenReflectionScore;
+      #definition: wheneverContractCompletedThenReflectionScore;wheneverClaimCompletedThenReflectionScore;whenevereReviewMemberEvaluatedThenReflectionScore;
+      definition: basicConsumer;
       
     stream:
       kafka:
@@ -99,20 +100,24 @@ spring:
 #              resetOffsets: true
 #              start-offset: earliest
       bindings:
-        wheneverContractCompletedThenReflectionScore-in-0:
+        basicConsumer-in-0:
           group: contract
           destination: caremoa-topic
           content-type: application/json        
-        
-        wheneverClaimCompletedThenReflectionScore-in-0:
-          group: claim
-          destination: caremoa-topic
-          content-type: application/json        
-        
-        whenevereReviewMemberEvaluatedThenReflectionScore-in-0:
-          group: review
-          destination: caremoa-topic
-          content-type: application/json        
+       # wheneverContractCompletedThenReflectionScore-in-0:
+       #   group: contract
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+       # 
+       # wheneverClaimCompletedThenReflectionScore-in-0:
+       #   group: claim
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+       # 
+       # whenevereReviewMemberEvaluatedThenReflectionScore-in-0:
+       #   group: review
+       #   destination: caremoa-topic
+       #   content-type: application/json        
         
         basicProducer-out-0:
           destination: caremoa-topic
@@ -178,7 +183,7 @@ feign:
         
 prop:
   test:
-    url: http://localhost:8081/member
+    url: http://localhost:8081/member/api
 
 #-------------------------------------------------------------
 # log File 설정
