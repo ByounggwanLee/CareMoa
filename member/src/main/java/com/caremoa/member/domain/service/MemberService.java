@@ -24,28 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 * @fileName       : MemberService.java
 * @author         : 이병관
 * @date           : 2023.05.14
-* @description    : CareMoa Member Service
-* ===========================================================
-* DATE              AUTHOR             NOTE
-* -----------------------------------------------------------
-* 2023.05.14        이병관       최초 생성
-*/
-/**
-* @packageName    : com.caremoa.member.domain.service
-* @fileName       : MemberService.java
-* @author         : 이병관
-* @date           : 2023.05.14
-* @description    :
-* ===========================================================
-* DATE              AUTHOR             NOTE
-* -----------------------------------------------------------
-* 2023.05.14        이병관       최초 생성
-*/
-/**
-* @packageName    : com.caremoa.member.domain.service
-* @fileName       : MemberService.java
-* @author         : 이병관
-* @date           : 2023.05.14
 * @description    :
 * ===========================================================
 * DATE              AUTHOR             NOTE

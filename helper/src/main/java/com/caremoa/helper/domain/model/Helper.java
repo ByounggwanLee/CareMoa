@@ -22,7 +22,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+* @packageName    : com.caremoa.helper.domain.model
+* @fileName       : HelperDto.java
+* @author         : 이병관
+* @date           : 2023.05.24
+* @description    : 도우미정보
+* ===========================================================
+* DATE              AUTHOR             NOTE
+* -----------------------------------------------------------
+* 2023.05.24        이병관       최초 생성
+*/
 @Entity
 @EntityListeners({ HelperListener.class, AuditingEntityListener.class })
 @Table(name = "HELPER")
@@ -32,13 +42,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Helper {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
-	Long id;
-	
-	@Column(name = "MEMBER_ID", nullable = false)
 	@Schema(description = "고객ID", nullable = false, defaultValue = "1")
-	Long memberId;
+	Long id;
 	
 	@Column(name = "NAME", length = 50)
 	@Schema(description = "이름", nullable = true, defaultValue = "이병관")
@@ -55,7 +61,7 @@ public class Helper {
 	LocalDate birthday;
 	
 	@Column(name = "HELPER_SCORE", nullable = true)
-	@Schema(description = "도우미별점", nullable = true, defaultValue = "50")
+	@Schema(description = "도우미별점", nullable = true)
 	Integer helperScore;
 	
 	@Column(name = "CAMCODER_AGREE", nullable = true)

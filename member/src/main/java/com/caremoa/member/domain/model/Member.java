@@ -67,6 +67,7 @@ public class Member {
 	@Schema(description = "별명", nullable = true, defaultValue = "Daniel")
 	private String nickname; // -- 별명
 
+	@Schema(description = "거주지역", nullable = true, defaultValue = "TRUE")
 	private Address address; // -- 도/시, 군/구, 읍/동
 
 	/*
