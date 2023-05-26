@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.caremoa.member.domain.dto.ContractCompleted;
+import com.caremoa.member.adapter.ContractCompleted;
 import com.caremoa.member.domain.dto.MemberDto;
 import com.caremoa.member.domain.service.MemberService;
 import com.caremoa.member.exception.ApiException;

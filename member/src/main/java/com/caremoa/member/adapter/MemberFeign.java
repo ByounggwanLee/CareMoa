@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.caremoa.member.domain.dto.MemberDto;
+import com.caremoa.member.domain.model.Member;
 
 @FeignClient(name="Member", url="${prop.test.url}")
 public interface MemberFeign {
 
 	@GetMapping("/members")
-	Page<MemberDto> getAll(Pageable pageable);
+	Page<Member> getAll(Pageable pageable);
+
+	//Page<MemberDto> getAll(Pageable pageable);
 
 	@GetMapping("/members/{id}")
 	MemberDto getById(@RequestParam("id") long id);

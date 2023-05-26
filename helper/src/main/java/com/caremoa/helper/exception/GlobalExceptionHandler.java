@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import lombok.extern.slf4j.Slf4j;
 
-@RestControllerAdvice(basePackages = "com.caremoa.member.controller")
+@RestControllerAdvice(basePackages = "com.caremoa.helper.controller")
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 

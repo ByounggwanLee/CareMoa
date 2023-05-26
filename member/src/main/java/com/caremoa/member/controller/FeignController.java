@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.caremoa.member.adapter.MemberFeign;
 import com.caremoa.member.domain.dto.MemberDto;
+import com.caremoa.member.domain.model.Member;
 import com.caremoa.member.exception.ApiException;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,7 +50,7 @@ public class FeignController {
 			@Content(mediaType = "application/json", schema = @Schema(implementation = MemberDto.class)) }),
 			@ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content) })
 	@GetMapping("/feigns")
-	public ResponseEntity<Page<MemberDto>> getAll(Pageable pageable) {
+	public ResponseEntity<Page<Member>> getAll(Pageable pageable) {
 		try {
 			log.info("getAll");
 			return ResponseEntity.ok().body(service.getAll(pageable));
