@@ -155,15 +155,15 @@ public class MemberRoleService {
 				});
 	}
 
-	// @Transactional
 	/**
 	 * @methodName    : deleteData
 	 * @date          : 2023.05.14
-	 * @description   : MemberRole과 Member를 삭제한다.
+	 * @description   : MemberRole를 삭제한다.
 	 * @param id
 	 * @throws Exception
 	 * @throws ApiException
 	*/
+	@Transactional
 	public void deleteData(@PathVariable("id") Long id) throws Exception, ApiException {
 		repository.deleteById(id);
 	}

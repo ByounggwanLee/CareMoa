@@ -138,18 +138,23 @@ public class HelperService {
 	*/
 	@Transactional
 	public void deleteData(@PathVariable("id") Long id) throws Exception, ApiException {
-		return repository.findById(id) //
-				.map(oldData -> {
-					switch(oldData.getStatus()) {
-					case DELETED:
-						repository.save(oldData);
-						break;
-					default :
-						repository.save(oldData);
-					}
-				}).orElseGet(() -> {
-					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Helper id=[%d] Not Found", id));
-				});
+		Optional<Helper> data =  repository.findById(id);
+		
+		if (!data.isPresent()) return;
+		
+		switch(data.get().getStatus()) {
+		case DELETED:
+			repository.deleteById(id);
+			break;
+		case DISABLED:
+			data.get().setStatus(HelperStausType.DELETED);
+			repository.save(data.get());
+			break;			
+		default :
+			data.get().setStatus(HelperStausType.DISABLED);
+			repository.save(data.get());
+			break;
+		}
 		
 	}
 

@@ -14,6 +14,7 @@ import com.caremoa.member.domain.model.MemberRole;
 import com.caremoa.member.domain.model.RoleType;
 import com.caremoa.member.domain.repository.MemberRepository;
 import com.caremoa.member.domain.repository.MemberRoleRepository;
+import com.caremoa.member.domain.model.MemberStatusType;
 import com.caremoa.member.exception.ApiException;
 
 import lombok.RequiredArgsConstructor;
@@ -148,8 +149,26 @@ public class MemberService {
 	 * @throws ApiException
 	*/
 	public void deleteData(@PathVariable("id") Long id) throws Exception, ApiException {
-		roleRepository.deleteByMemberId(id);
-		repository.deleteById(id);
+		Optional<Member> data =  repository.findById(id);
+		
+		if (!data.isPresent()) return;
+		
+		switch(data.get().getStatus()) {
+		case DELETED:
+			repository.deleteById(id);
+			roleRepository.deleteByMemberId(id);
+			repository.deleteById(id);
+			break;
+		case DISABLED:
+			data.get().setStatus(MemberStatusType.DELETED);
+			repository.save(data.get());
+			break;
+		default :
+			data.get().setStatus(MemberStatusType.DISABLED);
+			repository.save(data.get());
+			break;
+		}
+		
 	}
 	
 	@Transactional
