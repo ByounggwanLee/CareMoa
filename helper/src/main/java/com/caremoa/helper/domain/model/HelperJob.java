@@ -2,7 +2,9 @@ package com.caremoa.helper.domain.model;
 
 import java.time.LocalTime;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -35,7 +37,7 @@ import lombok.NoArgsConstructor;
 */
 @Entity
 @EntityListeners({ HelperJobListener.class, AuditingEntityListener.class })
-@Table(name = "HELPER_JOB")
+@Table(name = "HELPERJOB")
 @Data
 @NoArgsConstructor(access = AccessLevel.PUBLIC) // AccessLevel.PUBLIC
 @AllArgsConstructor
@@ -50,21 +52,33 @@ public class HelperJob {
 	@Schema(description = "도움미ID", nullable = false, defaultValue = "1")
 	Long helperId;
 	
-	@Column(name = "JOB_TYPE", nullable = true)
-	@Schema(description = "도우미업무", nullable = true, defaultValue = "BABYSITER")
-	HelperJobType jobType;
+	@Column(name = "JOB_TYPE", nullable = true, length = 10)
+	@Schema(description = "도우미업무", nullable = true, defaultValue = "10")
+	String jobType;
 	
 	@Column(name = "TAKE_AGE", nullable = true)
 	@Schema(description = "도우미업무", nullable = true, defaultValue = "NEWBORN")
 	TakerLevelType takerAge;
 	
-	@Schema(description = "근무선호지역1", nullable = true, defaultValue = "TRUE")
+	@Embedded
+	@AttributeOverride(name = "addressState", column = @Column(name = "JOB_AREA1_ADDRESS_STATE"))
+	@AttributeOverride(name = "addressCity", column = @Column(name = "JOB_AREA1_ADDRESS_CITY"))
+	@AttributeOverride(name = "addressStreet", column = @Column(name = "JOB_AREA1_ADDRESS_STREET"))
+	@Schema(description = "근무선호지역1", nullable = true)
 	Address jobArea1;
+
+	@Embedded
+	@AttributeOverride(name = "addressState", column = @Column(name = "JOB_AREA2_ADDRESS_STATE"))
+	@AttributeOverride(name = "addressCity", column = @Column(name = "JOB_AREA2_ADDRESS_CITY"))
+	@AttributeOverride(name = "addressStreet", column = @Column(name = "JOB_AREA2_ADDRESS_STREET"))
+	@Schema(description = "근무선호지역2", nullable = true)
+    Address jobArea2;
 	
-	@Schema(description = "근무선호지역2", nullable = true, defaultValue = "TRUE")
-	Address jobArea2;
-	
-	@Schema(description = "근무선호지역3", nullable = true, defaultValue = "TRUE")
+	@Embedded
+	@AttributeOverride(name = "addressState", column = @Column(name = "JOB_AREA3_ADDRESS_STATE"))
+	@AttributeOverride(name = "addressCity", column = @Column(name = "JOB_AREA3_ADDRESS_CITY"))
+	@AttributeOverride(name = "addressStreet", column = @Column(name = "JOB_AREA3_ADDRESS_STREET"))
+	@Schema(description = "근무선호지역3", nullable = true)
 	Address jobArea3;
 	
 	@Column(name = "WORKING_DAYS", nullable = true, length = 20)
@@ -75,7 +89,7 @@ public class HelperJob {
 	@Schema(description = "근무시작가능시간", nullable = true, defaultValue = "09:00")
 	LocalTime workStartTime;  
 	
-	@Column(name = "WORK_START_TIME", nullable = true)
+	@Column(name = "WORK_END_TIME", nullable = true)
 	@Schema(description = "근무종료가능시간", nullable = true, defaultValue = "18:00")
 	LocalTime workEndTime;
 	
@@ -94,4 +108,9 @@ public class HelperJob {
 	@Column(name = "ABOUT_ME", nullable = true, length = 2048)
 	@Schema(description = "자기소개", nullable = true, defaultValue = "HOURLY02")
 	String aboutMe;
+
+	@Column(name = "ACTIVE_FLAG", nullable = true)
+	@Schema(description = "활성화여부", nullable = true, defaultValue = "true")
+	Boolean activeFlag;
+
 }

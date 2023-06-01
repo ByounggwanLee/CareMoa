@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.caremoa.helper.domain.model.HelperJob;
 import com.caremoa.helper.domain.repository.HelperJobRepository;
@@ -132,5 +133,23 @@ public class HelperJobService {
 				}).orElseGet(() -> {
 					throw new ApiException(HttpStatus.NOT_FOUND, String.format("HelperJob id=[%d] Not Found", id));
 				});
+	}
+	
+	/**
+	 * @methodName    : deleteData
+	 * @date          : 2023.05.14
+	 * @description   : Helper를 삭제한다.
+	 * @param id
+	 * @throws Exception
+	 * @throws ApiException
+	*/
+	@Transactional
+	public void deleteData(@PathVariable("id") Long id) throws Exception, ApiException {
+		Optional<HelperJob> data =  repository.findById(id);
+		
+		if (!data.isPresent()) return;
+		
+		data.get().setActiveFlag(false);
+		repository.save(data.get());	
 	}
 }
