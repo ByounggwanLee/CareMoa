@@ -1,0 +1,49 @@
+spring:
+  cloud:
+    gateway:
+      # Spring Cloud Gateway CORS 문제 해결하기
+      # https://velog.io/@mdy0102/Spring-Cloud-Gateway-CORS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOrigins: "http://localhost:8080"
+            allow-credentials: true
+            allowedHeaders: "*"
+            allowedMethods:
+            - GET
+            - POST
+            - PUT
+            - PATCH
+            - DELETE
+      routes:
+        - id: caremoa-member
+          uri: http://localhost:8081    # 인증 서버 URI 
+          predicates:                   # 요청 헤더나 Path 조건 비교
+            - Path=/member/**    # 요청 Path
+          filters:
+            - AddRequestHeader=member-request, member-request-header2
+            - AddResponseHeader=member-response, member-response-header2
+            
+        - id: caremoa-helper
+          uri: http://localhost:8082
+          predicates:            
+            - Path=/helper/**
+          filters:
+            - AuthorizationHeaderFilter # JWT 검증을 위한 Custom GatewayFilter
+            - AddRequestHeader=helper-request, helper-request-header2
+            - AddResponseHeader=helper-response, helper-response-header2
+server:
+  port: 8080
+
+logging:
+  level:
+    root: error # trace, debug, info, warn, error, fatal
+    org:
+      springframework:
+        cloud: debug
+
+token:
+  expiration_time: 86400000
+  secret: user_token

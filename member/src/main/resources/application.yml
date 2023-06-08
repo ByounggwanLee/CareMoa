@@ -18,6 +18,7 @@ spring:
   jackson:
     serialization:
       INDENT_OUTPUT: false
+
   sql:
     init:
       mode: embedded # ALWAYS: 모든 데이터베이스에 sql 스크립트를 동작시킨다. / EMBDEDED: embedded 데이터베이스만 sql 스크립트를 동작시킨다. / NEVER: 모든 데이터베이스에 sql 스크립트를 동작시키지 않는다.
