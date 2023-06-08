@@ -1,0 +1,14 @@
+mkdir %1\src\main\java\com\caremoa\%1\adapter
+mkdir %1\src\main\java\com\caremoa\%1\app
+mkdir %1\src\main\java\com\caremoa\%1\app\config
+mkdir %1\src\main\java\com\caremoa\%1\controller
+mkdir %1\src\main\java\com\caremoa\%1\domain
+mkdir %1\src\main\java\com\caremoa\%1\domain\dto
+mkdir %1\src\main\java\com\caremoa\%1\domain\listener
+mkdir %1\src\main\java\com\caremoa\%1\domain\model
+mkdir %1\src\main\java\com\caremoa\%1\domain\model\vo
+mkdir %1\src\main\java\com\caremoa\%1\domain\repository
+mkdir %1\src\main\java\com\caremoa\%1\domain\service
+mkdir %1\src\main\java\com\caremoa\%1\exception
+mkdir %1\src\main\resources\db
+mkdir %1\src\main\resources\db\h2
