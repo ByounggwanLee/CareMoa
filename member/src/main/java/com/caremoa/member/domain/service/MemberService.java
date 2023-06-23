@@ -1,6 +1,7 @@
 package com.caremoa.member.domain.service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.caremoa.member.domain.model.Member;
 import com.caremoa.member.domain.model.MemberRole;
+import com.caremoa.member.domain.model.MemberStatusType;
 import com.caremoa.member.domain.model.RoleType;
 import com.caremoa.member.domain.repository.MemberRepository;
 import com.caremoa.member.domain.repository.MemberRoleRepository;
-import com.caremoa.member.domain.model.MemberStatusType;
 import com.caremoa.member.exception.ApiException;
 
 import lombok.RequiredArgsConstructor;
@@ -180,5 +181,14 @@ public class MemberService {
 				}).orElseGet(() -> {
 					throw new ApiException(HttpStatus.NOT_FOUND, String.format("Member id=[%d] Not Found", id));
 				});
+	}
+	
+	public String Logon(String userId, String password) throws Exception, ApiException {
+		Optional<Member> data =  repository.findByUserId(userId);
+		
+		if (!data.isPresent()) return null;
+		if (!password.equals(data.get().getPassword())) return null;
+		
+		return "DDD";
 	}
 }

@@ -1,5 +1,7 @@
 package com.caremoa.member.domain.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.caremoa.member.domain.model.Member;
@@ -17,7 +19,7 @@ import com.caremoa.member.domain.model.Member;
 * 2023.05.14        이병관       최초 생성
 */
 public interface MemberRepository extends JpaRepository<Member, Long> {
-
+	Optional<Member> findByUserId(String userId);
 }
 /**
 +-------------------+----------------------------------------------------+------------------------------------+

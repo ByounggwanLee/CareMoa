@@ -31,7 +31,8 @@ spring:
           predicates:            
             - Path=/helper/**
           filters:
-            - AuthorizationHeaderFilter # JWT 검증을 위한 Custom GatewayFilter
+            - JwtAuthentication=ROLE_ADMIN
+          #  - AuthorizationHeaderFilter # JWT 검증을 위한 Custom GatewayFilter
             - AddRequestHeader=helper-request, helper-request-header2
             - AddResponseHeader=helper-response, helper-response-header2
 server:
@@ -40,10 +41,12 @@ server:
 logging:
   level:
     root: error # trace, debug, info, warn, error, fatal
-    org:
-      springframework:
-        cloud: debug
+    '[org.springframework.cloud]': debug
+    '[com.caremoa.gateway]': debug    
 
-token:
-  expiration_time: 86400000
-  secret: user_token
+jwt:
+  header: Authorization
+  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
+  #echo 'com.caremoa.jwtcom.caremoa.jwtcom.caremoa.jwtcom.caremoa.jwtcom.caremoa.jwtcom.caremoa.jwt'|base64
+  secret: Y29tLmNhcmVtb2Euand0Y29tLmNhcmVtb2Euand0Y29tLmNhcmVtb2Euand0Y29tLmNhcmVtb2Euand0Y29tLmNhcmVtb2Euand0Y29tLmNhcmVtb2Euand0Cg==
+  token-validity-in-seconds: 86400

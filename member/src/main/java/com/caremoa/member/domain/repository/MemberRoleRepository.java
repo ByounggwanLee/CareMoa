@@ -1,5 +1,7 @@
 package com.caremoa.member.domain.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +23,6 @@ import com.caremoa.member.domain.model.RoleType;
 public interface MemberRoleRepository extends JpaRepository<MemberRole, Long> {
 	MemberRole findByMemberIdAndRole(Long memberId, RoleType role);
 	Page<MemberRole> findByMemberId(Long memberId, Pageable pageable);
+	List<MemberRole> findByMemberId(Long memberId);
 	void deleteByMemberId(Long memberId);
 }

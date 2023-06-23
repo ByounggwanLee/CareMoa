@@ -1,7 +1,6 @@
 package com.caremoa.member.domain.dto;
 
 import com.caremoa.member.adapter.AbstractEvent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Data;
