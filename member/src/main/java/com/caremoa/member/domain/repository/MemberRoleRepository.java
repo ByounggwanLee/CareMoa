@@ -23,6 +23,6 @@ import com.caremoa.member.domain.model.RoleType;
 public interface MemberRoleRepository extends JpaRepository<MemberRole, Long> {
 	MemberRole findByMemberIdAndRole(Long memberId, RoleType role);
 	Page<MemberRole> findByMemberId(Long memberId, Pageable pageable);
-	List<MemberRole> findByMemberId(Long memberId);
+//	List<MemberRole> findByMemberId(Long memberId);
 	void deleteByMemberId(Long memberId);
 }
