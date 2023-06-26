@@ -68,7 +68,6 @@ mybatis:  # type을 쉽게 쓰기 위해서 dto 패키지를 type-aliaes에 설�
     default-fetch-size: 500
     default-statement-timeout: 30
 
-
 ####################################################################
 # Local 개발환경 설정
 ####################################################################
@@ -188,7 +187,6 @@ logging:
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul
 
-
 #-------------------------------------------------------------
 # Kafka 설정
 #-------------------------------------------------------------
@@ -277,10 +275,9 @@ spring:
       #classpath*:db/${database}/data.sql
 
   datasource:
-    url: jdbc:h2:mem:memberdb 
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://13.125.214.14:3306/caremoa_member?serverTimezone=Asia/Seoul 
+    username: user1
+    password: user1
     hikari:   # SpringBoot2.x 는 디폴트로 HikariCP(성능좋음)
       connection-timeout: 50000
       idle-timeout: 300000
@@ -315,7 +312,7 @@ spring:
     properties:
       hibernate:
         # dialect: org.hibernate.dialect.Oracle10gDialect
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         "[format_sql]": true
         "[show_sql]": true
         "[use_sql_comment]": true
@@ -417,7 +414,7 @@ logging:
 #-------------------------------------------------------------
 # 사용자 정의 설정
 #-------------------------------------------------------------        
-database: h2    
+database: mysql    
 prop:
   test:
     url: http://localhost:8081/member/api

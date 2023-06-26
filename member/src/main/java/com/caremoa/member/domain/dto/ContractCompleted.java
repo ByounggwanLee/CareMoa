@@ -4,6 +4,7 @@ import com.caremoa.member.adapter.AbstractEvent;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 */
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper=false)
 public class ContractCompleted extends AbstractEvent{
 	private Long memberId; // -- ID
 	private Long helperId; // -- ID

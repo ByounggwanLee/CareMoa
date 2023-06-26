@@ -1,112 +1,6 @@
-server:
-  port: 8082
-  servlet:
-    contextPath: /helper
-
-database: h2    
-
-spring:
-  data:
-    rest:
-      base-path: /api
-#      default-media-type: application/hal+json
-    web:
-      pageable:
-        default-page-size: 20 # 기본 페이지 사이즈
-        max-page-size: 2000 # 최대 페이지 사이즈
-      
-  jackson:
-    serialization:
-      INDENT_OUTPUT: false
-  sql:
-    init:
-      mode: embedded # ALWAYS: 모든 데이터베이스에 sql 스크립트를 동작시킨다. / EMBDEDED: embedded 데이터베이스만 sql 스크립트를 동작시킨다. / NEVER: 모든 데이터베이스에 sql 스크립트를 동작시키지 않는다.
-      schema-locations: classpath*:db/${database}/schema.sql
-      data-locations: classpath*:db/${database}/data.sql
-      #classpath*:db/schema.sql
-      #classpath*:db/${database}/data.sql
-  datasource:
-    url: jdbc:h2:mem:helperdb 
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-    hikari:   # SpringBoot2.x 는 디폴트로 HikariCP(성능좋음)
-      connection-timeout: 50000
-      idle-timeout: 300000
-      max-lifetime: 900000
-      maximum-pool-size: 10
-      minimum-idle: 10
-      pool-name: ConnPool
-      connection-test-query: select 1 from dual
-      
-      data-source-properties:
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
-        useLocalSessionState: true
-        rewriteBatchedStatements: true
-        cacheResultSetMetadata: true
-        cacheServerConfiguration: true
-        elideSetAutoCommits: true
-        maintainTimeStats: false
-  jpa:
-    open-in-view: false
-    hibernate:
-      ddl-auto: none # create, create-drop, validate, update, none
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        # SpringPhysicalNamingStrategy(Default)  =>  camel case를 underscore 형태로 변경
-        # PhysicalNamingStrategyStandardImpl     =>  변수 이름을 그대로 사용
-        use-new-id-generator-mappings: false
-    generate-ddl: true
-    show_sql: true
-    properties:
-      hibernate:
-        # dialect: org.hibernate.dialect.Oracle10gDialect
-        dialect: org.hibernate.dialect.H2Dialect
-        "[format_sql]": true
-        "[show_sql]": true
-        "[use_sql_comment]": true
-
-  
-#-------------------------------------------------------------
-# h2 Console을 이용한 datasource 접근 처리
-# http://localhost:8080/caremoa.member/h2-console
-#-------------------------------------------------------------
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
-#-------------------------------------------------------------
-# Kafka 설정
-#-------------------------------------------------------------
-  cloud:
-    function:
-      definition: basicConsumer;
-      
-    stream:
-      kafka:
-        #binder:
-        #  brokers: localhost:9091,localhost:9092,localhost:9093
-        #  zkNodes: localhost:2181,localhost:2182,localhost:2183
-        binder:
-          brokers: localhost:9092
-#        bindings:
-#          basicConsumer-in-0:
-#            consumer:
-#              resetOffsets: true
-#              start-offset: earliest
-      bindings:
-        basicConsumer-in-0:
-          group: member
-          destination: caremoa-topic
-          content-type: application/json
-        basicProducer-out-0:
-          destination: caremoa-topic
-          content-type: application/json
-          
+####################################################################
+# 공통 환경 설정
+####################################################################
 #-------------------------------------------------------------
 # springdoc 정의
 # http://localhost:8080/swagger-ui.html
@@ -159,11 +53,112 @@ feign:
         connectTimeout: 5000
         readTimeout: 5000
         loggerLevel: basic
-        
-prop:
-  test:
-    url: http://localhost:8081/member
 
+#-------------------------------------------------------------
+# mybatis 설정 정의
+#-------------------------------------------------------------
+mybatis:  # type을 쉽게 쓰기 위해서 dto 패키지를 type-aliaes에 설정
+  # xml파일 result type에 패키지명을 생략할 수 있도록 Alias 설정
+  type-aliases-package: com.caremoa.member.domain.mybatis
+  # resource디렉토리의 mapper xml 파일위치
+  mapper-locations: classpath:mapper/**/*.xml
+  # type-handlers-package: com.example.typehandler
+  configuration:
+  # map-underscore-to-camel-case: true
+    default-fetch-size: 500
+    default-statement-timeout: 30
+
+####################################################################
+# Local 개발환경 설정
+####################################################################
+---         
+spring:
+  config:
+    activate:
+      on-profile: default
+      
+  data:
+    rest:
+      base-path: /api
+#      default-media-type: application/hal+json
+    web:
+      pageable:
+        default-page-size: 20 # 기본 페이지 사이즈
+        max-page-size: 2000 # 최대 페이지 사이즈
+      
+  jackson:
+    serialization:
+      INDENT_OUTPUT: false
+      
+  sql:
+    init:
+      mode: embedded # ALWAYS: 모든 데이터베이스에 sql 스크립트를 동작시킨다. / EMBDEDED: embedded 데이터베이스만 sql 스크립트를 동작시킨다. / NEVER: 모든 데이터베이스에 sql 스크립트를 동작시키지 않는다.
+      schema-locations: classpath*:db/${database}/schema.sql
+      data-locations: classpath*:db/${database}/data.sql
+      #classpath*:db/schema.sql
+      #classpath*:db/${database}/data.sql
+ 
+  datasource:
+    url: jdbc:h2:mem:helperdb 
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    hikari:   # SpringBoot2.x 는 디폴트로 HikariCP(성능좋음)
+      connection-timeout: 50000
+      idle-timeout: 300000
+      max-lifetime: 900000
+      maximum-pool-size: 10
+      minimum-idle: 10
+      pool-name: ConnPool
+      connection-test-query: select 1 from dual
+      
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none # create, create-drop, validate, update, none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        # SpringPhysicalNamingStrategy(Default)  =>  camel case를 underscore 형태로 변경
+        # PhysicalNamingStrategyStandardImpl     =>  변수 이름을 그대로 사용
+        use-new-id-generator-mappings: false
+    generate-ddl: true
+    show_sql: true
+    properties:
+      hibernate:
+        # dialect: org.hibernate.dialect.Oracle10gDialect
+        dialect: org.hibernate.dialect.H2Dialect
+        "[format_sql]": true
+        "[show_sql]": true
+        "[use_sql_comment]": true
+
+#-------------------------------------------------------------
+# h2 Console을 이용한 datasource 접근 처리
+# http://localhost:8080/caremoa.member/h2-console
+#-------------------------------------------------------------
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+#-------------------------------------------------------------
+# 서버 포트 설정
+#-------------------------------------------------------------
+server:
+  port: 8081
+  servlet:
+    contextPath: /helper
+          
 #-------------------------------------------------------------
 # log File 설정
 #-------------------------------------------------------------
@@ -191,15 +186,236 @@ logging:
       max-history: 30
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul
-    
-mybatis:  # type을 쉽게 쓰기 위해서 dto 패키지를 type-aliaes에 설정
-  # xml파일 result type에 패키지명을 생략할 수 있도록 Alias 설정
-  type-aliases-package: com.caremoa.member.domain.mybatis
-  # resource디렉토리의 mapper xml 파일위치
-  mapper-locations: classpath:mapper/**/*.xml
-  # type-handlers-package: com.example.typehandler
-  configuration:
-  # map-underscore-to-camel-case: true
-    default-fetch-size: 500
-    default-statement-timeout: 30
+
+#-------------------------------------------------------------
+# Kafka 설정
+#-------------------------------------------------------------
+  cloud:
+    function:
+      #definition: wheneverContractCompletedThenReflectionScore;wheneverClaimCompletedThenReflectionScore;whenevereReviewMemberEvaluatedThenReflectionScore;
+      definition: basicConsumer;
+      
+    stream:
+      kafka:
+        #binder:
+        #  brokers: localhost:9091,localhost:9092,localhost:9093
+        #  zkNodes: localhost:2181,localhost:2182,localhost:2183
+        binder:
+          brokers: localhost:9092
+#        bindings:
+#          basicConsumer-in-0:
+#            consumer:
+#              resetOffsets: true
+#              start-offset: earliest
+      bindings:
+        basicConsumer-in-0:
+          group: contract
+          destination: caremoa-topic
+          content-type: application/json        
+       # wheneverContractCompletedThenReflectionScore-in-0:
+       #   group: contract
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+       # 
+       # wheneverClaimCompletedThenReflectionScore-in-0:
+       #   group: claim
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+       # 
+       # whenevereReviewMemberEvaluatedThenReflectionScore-in-0:
+       #   group: review
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+        
+        basicProducer-out-0:
+          destination: caremoa-topic
+          content-type: application/json
+        
+       # basicConsumer-in-0:
+       #   group: member
+       #   destination: caremoa-topic
+       #   content-type: application/json
+
+#-------------------------------------------------------------
+# 사용자 정의 설정
+#-------------------------------------------------------------        
+database: h2  
+prop:
+  test:
+    url: http://localhost:8081/helper/api  
+
+####################################################################
+# 서버배포(Docker)환경 설정
+####################################################################    
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+      
+  data:
+    rest:
+      base-path: /api
+#      default-media-type: application/hal+json
+    web:
+      pageable:
+        default-page-size: 20 # 기본 페이지 사이즈
+        max-page-size: 2000 # 최대 페이지 사이즈
+      
+  jackson:
+    serialization:
+      INDENT_OUTPUT: false
+
+  sql:
+    init:
+      mode: embedded # ALWAYS: 모든 데이터베이스에 sql 스크립트를 동작시킨다. / EMBDEDED: embedded 데이터베이스만 sql 스크립트를 동작시킨다. / NEVER: 모든 데이터베이스에 sql 스크립트를 동작시키지 않는다.
+      schema-locations: classpath*:db/${database}/schema.sql
+      data-locations: classpath*:db/${database}/data.sql
+      #classpath*:db/schema.sql
+      #classpath*:db/${database}/data.sql
+
+  datasource:
+    url: jdbc:mysql://13.125.214.14:3306/caremoa_helper?serverTimezone=Asia/Seoul 
+    username: user1
+    password: user1
+    hikari:   # SpringBoot2.x 는 디폴트로 HikariCP(성능좋음)
+      connection-timeout: 50000
+      idle-timeout: 300000
+      max-lifetime: 900000
+      maximum-pool-size: 10
+      minimum-idle: 10
+      pool-name: ConnPool
+      connection-test-query: select 1 from dual
+      
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none # create, create-drop, validate, update, none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        # SpringPhysicalNamingStrategy(Default)  =>  camel case를 underscore 형태로 변경
+        # PhysicalNamingStrategyStandardImpl     =>  변수 이름을 그대로 사용
+        use-new-id-generator-mappings: false
+    generate-ddl: true
+    show_sql: true
+    properties:
+      hibernate:
+        # dialect: org.hibernate.dialect.Oracle10gDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        "[format_sql]": true
+        "[show_sql]": true
+        "[use_sql_comment]": true
+
+#-------------------------------------------------------------
+# h2 Console을 이용한 datasource 접근 처리
+# http://localhost:8080/caremoa.member/h2-console
+#-------------------------------------------------------------
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+#-------------------------------------------------------------
+# 포트 설정
+#-------------------------------------------------------------
+server:
+  port: 8080
+  servlet:
+    contextPath: /helper
+
+#-------------------------------------------------------------
+# log File 설정
+#-------------------------------------------------------------
+logging:
+  level:
+    root: error # trace, debug, info, warn, error, fatal
+    "[org.springframework]": error
+    "[org.springframework.jdbc]": error
+    "[org.hibernate.type]": error      # 파라메터값 확인을 위해서는 trace / off
+    "[com.caremoa]": error
+        
+    jdbc:
+      connection: off
+      sqlonly: off
+      sqltiming: error
+      audit: off
+      result: off
+      resultsettable: error
+  file:
+    name: logs/app.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 100MB
+      max-history: 30
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS,Asia/Seoul
+
+#-------------------------------------------------------------
+# Kafka 설정
+#-------------------------------------------------------------
+  cloud:
+    function:
+      #definition: wheneverContractCompletedThenReflectionScore;wheneverClaimCompletedThenReflectionScore;whenevereReviewMemberEvaluatedThenReflectionScore;
+      definition: basicConsumer;
+      
+    stream:
+      kafka:
+        #binder:
+        #  brokers: localhost:9091,localhost:9092,localhost:9093
+        #  zkNodes: localhost:2181,localhost:2182,localhost:2183
+        binder:
+          brokers: localhost:9092
+#        bindings:
+#          basicConsumer-in-0:
+#            consumer:
+#              resetOffsets: true
+#              start-offset: earliest
+      bindings:
+        basicConsumer-in-0:
+          group: contract
+          destination: caremoa-topic
+          content-type: application/json        
+       # wheneverContractCompletedThenReflectionScore-in-0:
+       #   group: contract
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+       # 
+       # wheneverClaimCompletedThenReflectionScore-in-0:
+       #   group: claim
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+       # 
+       # whenevereReviewMemberEvaluatedThenReflectionScore-in-0:
+       #   group: review
+       #   destination: caremoa-topic
+       #   content-type: application/json        
+        
+        basicProducer-out-0:
+          destination: caremoa-topic
+          content-type: application/json
+        
+       # basicConsumer-in-0:
+       #   group: member
+       #   destination: caremoa-topic
+       #   content-type: application/json
+       
+#-------------------------------------------------------------
+# 사용자 정의 설정
+#-------------------------------------------------------------        
+database: mysql    
+prop:
+  test:
+    url: http://localhost:8081/helper/api
     
