@@ -75,13 +75,6 @@ public class WebSecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                // 개발시에는 주석을 풀고 수행하면 Token을 검사하지 않는다.
-                // .antMatchers("/*").permitAll()
-                // .antMatchers("/api/*/*").permitAll()
-                // -------------------------------------------------------
-                //.antMatchers("/notify").permitAll()
-                //.antMatchers("/alarmNotification").permitAll()
-                //.antMatchers("/callRecodingInformations").permitAll()
                 .antMatchers("/authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and()

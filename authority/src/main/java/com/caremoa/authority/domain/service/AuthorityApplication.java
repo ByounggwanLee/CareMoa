@@ -1,4 +1,4 @@
-package com.caremoa.authority;
+package com.caremoa.authority.domain.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

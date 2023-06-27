@@ -1,4 +1,4 @@
-package com.caremoa.member.adapter;
+package com.caremoa.authority.adapter;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
@@ -11,22 +11,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.caremoa.member.domain.dto.MemberDto;
-import com.caremoa.member.domain.model.Member;
+import com.caremoa.authority.domain.dto.MemberDto;
 
-@FeignClient(name="Member", url="${prop.test.url}")
+@FeignClient(name="Member", url="${prop.member.url}")
 public interface MemberFeign {
 
 	@GetMapping("/members")
 	Page<MemberDto> getAll(Pageable pageable);
-
 	//Page<MemberDto> getAll(Pageable pageable);
 
 	@GetMapping("/members/{id}")
 	MemberDto getById(@RequestParam("id") long id);
 
 	@PostMapping("/members")
-	MemberDto postData(MemberDto memberDto);
+	MemberDto postData(MemberDto newData);
 
 	@PutMapping("/members/{id}")
 	MemberDto putData(MemberDto newData, @PathVariable("id") Long id);

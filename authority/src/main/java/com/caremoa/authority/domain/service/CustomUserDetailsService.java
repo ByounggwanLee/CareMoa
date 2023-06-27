@@ -1,4 +1,4 @@
-package com.caremoa.authority;
+package com.caremoa.authority.domain.service;
 
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -46,6 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) {
 		if("lbg".equals(username)) {
             return new User("lbg", passwordEncoder.encode("lbg111"), AuthorityUtils.createAuthorityList("ADMIN", "MEMBER", "HELPER"));
+			// return new User("lbg","lbg111", AuthorityUtils.createAuthorityList("ADMIN", "MEMBER", "HELPER"));
         } else {
             throw new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다.");
         }

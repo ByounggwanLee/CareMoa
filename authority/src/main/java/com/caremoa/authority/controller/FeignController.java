@@ -1,4 +1,4 @@
-package com.caremoa.member.controller;
+package com.caremoa.authority.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.caremoa.member.adapter.MemberFeign;
-import com.caremoa.member.domain.dto.MemberDto;
-import com.caremoa.member.domain.model.Member;
-import com.caremoa.member.exception.ApiException;
+import com.caremoa.authority.adapter.MemberFeign;
+import com.caremoa.authority.domain.dto.MemberDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -69,8 +67,6 @@ public class FeignController {
 	public ResponseEntity<MemberDto> getById(@PathVariable("id") Long id) {
 		try {
 		    return new ResponseEntity<>(service.getById(id),HttpStatus.OK);
-		}catch( ApiException apiEx ) {
-		    return new ResponseEntity<>(null, apiEx.getCode());
 	    }catch (Exception e) {
 			return ResponseEntity.internalServerError().body(null);
 		}
@@ -99,8 +95,6 @@ public class FeignController {
 			@PathVariable("id") Long id) {
 		try {
 			return new ResponseEntity<>(service.putData(newData,id), HttpStatus.CREATED);
-		}catch( ApiException apiEx ) {
-		     return new ResponseEntity<>(null, apiEx.getCode());
 	    } catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

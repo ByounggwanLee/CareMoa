@@ -1,4 +1,4 @@
-package com.caremoa.authority;
+package com.caremoa.authority.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.caremoa.authority;
+package com.caremoa.authority.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.caremoa.authority.domain.dto.TokenDto;
 import com.caremoa.authority.jwt.JwtFilter;
 import com.caremoa.authority.jwt.TokenProvider;
 
@@ -20,6 +21,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -35,14 +37,10 @@ import lombok.extern.slf4j.Slf4j;
 */
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class AuthController {
         private final TokenProvider tokenProvider;
         private final AuthenticationManagerBuilder authenticationManagerBuilder;
-
-        public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-                this.tokenProvider = tokenProvider;
-                this.authenticationManagerBuilder = authenticationManagerBuilder;
-        }
 
         @Operation(summary = "로그인", description = "로그인 처리")
         @ApiResponses(value = {
