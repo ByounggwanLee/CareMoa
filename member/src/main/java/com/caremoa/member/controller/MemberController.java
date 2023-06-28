@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.caremoa.member.adapter.ContractCompleted;
+import com.caremoa.member.domain.dto.LoginDto;
 import com.caremoa.member.domain.dto.MemberDto;
 import com.caremoa.member.domain.service.MemberService;
 import com.caremoa.member.exception.ApiException;
@@ -203,5 +205,19 @@ public class MemberController {
 			log.info("publish {}", e.getMessage());
 			return ResponseEntity.internalServerError().body(null);
 		}
+	}
+	
+	/**
+	 * @methodName    : Login
+	 * @date          : 2023.05.31
+	 * @description   : ID로 조회한다.(GET)
+	 * @param id
+	 * @return
+	 * @throws Exception 
+	 * @throws ApiException 
+	*/
+	@GetMapping("/login")
+	public LoginDto findUserId(@RequestParam("userId") String userId) throws ApiException, Exception {
+		return service.findUserId(userId);
 	}
 }

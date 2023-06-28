@@ -8,44 +8,26 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.caremoa.authority.adapter.MemberFeign;
+import com.caremoa.authority.domain.dto.LoginDto;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component("userDetailsService")
 @RequiredArgsConstructor
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 	private final PasswordEncoder passwordEncoder;
-
-	/* private final MUsrInfoRepository mUsrInfoRepository;
-    private final JUsrRoleRepository jUsrRoleRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public CustomUserDetailsService(MUsrInfoRepository mUsrInfoRepository, JUsrRoleRepository jUsrRoleRepository,
-            PasswordEncoder passwordEncoder) {
-        this.mUsrInfoRepository = mUsrInfoRepository;
-        this.jUsrRoleRepository = jUsrRoleRepository;
-        this.passwordEncoder = passwordEncoder;
-    } 
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(final String username) {
-        Optional<MUsrInfo> mUsrInfo = mUsrInfoRepository.findById(username);
-
-        if (mUsrInfo.isPresent()) {
-            List<GrantedAuthority> grantedAuthorities = jUsrRoleRepository.findByUsrIdAndRoleKnd(username, "M_USR_GRP")
-                    .stream().map(data -> new SimpleGrantedAuthority(data.getRoleCode())).collect(Collectors.toList());
-            return new org.springframework.security.core.userdetails.User(mUsrInfo.get().getUsrId(),
-                    passwordEncoder.encode(mUsrInfo.get().getPwd()), grantedAuthorities);
-        } else {
-            throw new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다.");
-        }
-    } 
-    */
+	private final MemberFeign serviceController;
 	
 	@Override
     public UserDetails loadUserByUsername(final String username) {
-		if("lbg".equals(username)) {
-            return new User("lbg", passwordEncoder.encode("lbg111"), AuthorityUtils.createAuthorityList("ADMIN", "MEMBER", "HELPER"));
+		LoginDto loginDto =  serviceController.findUserId(username);
+		
+		if(loginDto != null) {
+			 log.info(loginDto.toString());
+			 return new User(loginDto.getUserId(), passwordEncoder.encode(loginDto.getPassword()), AuthorityUtils.createAuthorityList(loginDto.getRole().split(",")));
 			// return new User("lbg","lbg111", AuthorityUtils.createAuthorityList("ADMIN", "MEMBER", "HELPER"));
         } else {
             throw new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다.");

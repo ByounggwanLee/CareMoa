@@ -11,27 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.caremoa.authority.domain.dto.LoginDto;
 import com.caremoa.authority.domain.dto.MemberDto;
 
 @FeignClient(name="Member", url="${prop.member.url}")
 public interface MemberFeign {
-
-	@GetMapping("/members")
-	Page<MemberDto> getAll(Pageable pageable);
-	//Page<MemberDto> getAll(Pageable pageable);
-
-	@GetMapping("/members/{id}")
-	MemberDto getById(@RequestParam("id") long id);
-
+	@GetMapping("/login")
+	public LoginDto findUserId(@RequestParam("userId") String userId);
+	
 	@PostMapping("/members")
 	MemberDto postData(MemberDto newData);
-
-	@PutMapping("/members/{id}")
-	MemberDto putData(MemberDto newData, @PathVariable("id") Long id);
-
-	@PatchMapping("/members/{id}")
-	MemberDto patchData(MemberDto newData, @PathVariable("id") Long id);
-
-	@DeleteMapping("/members/{id}")
-	void deleteData(@PathVariable("id") Long id);
 }

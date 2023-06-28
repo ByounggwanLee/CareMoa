@@ -1,6 +1,7 @@
 package com.caremoa.authority.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -38,8 +39,9 @@ public class WebSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(11);
     }
+    
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -75,8 +77,7 @@ public class WebSecurityConfig {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authenticate").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/*").permitAll()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
 
